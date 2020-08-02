@@ -46,6 +46,6 @@ RUN apt-get update && \
     && apt-get purge -y --auto-remove \
     curl
 
-COPY --from=dev /fetch/main .
+COPY --from=dev /fetch/main /fetch/
 
 ENTRYPOINT ["./main"]
