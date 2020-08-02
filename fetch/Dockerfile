@@ -24,12 +24,13 @@ RUN go mod download
 # Hot-Reloader
 RUN go get github.com/githubnemo/CompileDaemon
 
+# This is not required for the dev build, but needed for prod
+RUN go build main.go 
+
 ENTRYPOINT CompileDaemon --build="go build main.go" --command="./main"
 
 #-------------PRODUCTION IMAGE---------------#
 FROM buildpack-deps:buster-scm as prod
-
-WORKDIR /fetch
 
 # install the netCDF C package
 RUN apt-get update && \
@@ -46,6 +47,6 @@ RUN apt-get update && \
     && apt-get purge -y --auto-remove \
     curl
 
-COPY --from=dev /fetch/main /fetch/
+COPY --from=dev /fetch/main /
 
-ENTRYPOINT ["./main"]
+CMD ./main
