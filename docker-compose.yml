@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  fetch:
+      build:
+        context: ./fetch
+        # target: dev
+        target: prod
+      container_name: fetch
+      image: dewberrycsi/nwm-fetch-forecasts:1.0.0
+      privileged: true
+      volumes:
+        - ./fetch:/fetch
