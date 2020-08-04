@@ -49,4 +49,7 @@ RUN apt-get update && \
 
 COPY --from=dev /fetch/main /
 
-CMD ./main
+RUN mkdir /retrospective
+RUN mkdir /forecast
+
+ENTRYPOINT [ "/main" ]

@@ -6,7 +6,7 @@ services:
         # target: dev
         target: prod
       container_name: fetch
-      image: dewberrycsi/nwm-fetch-forecasts:1.0.0
+      image: dewberrycsi/nwm-fetch-forecasts:1.0.1
       privileged: true
       volumes:
         - ./fetch:/fetch
