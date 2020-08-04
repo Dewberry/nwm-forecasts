@@ -17,6 +17,10 @@ In order to run this container you'll need docker installed.
 
 ### Usage
 
+#### Docker run options
+- Docker run requires the `--privileged` option in order to allow `goofys` to mount the AWS and GCP buckets.
+- In a docker-compose.yml file: `privileged: true`
+
 #### Container Parameters
 
  - `-date_time`: the date and time you want to pull stream flow for, in the format "2006-01-02-15"
@@ -33,33 +37,45 @@ In order to run this container you'll need docker installed.
 
 Grabs short range forecast streamflow for multiple indices
 ```shell
-docker run dewberrycsi/nwm-fetch-forecasts:latest -date_time "2019-01-02-15" -product short -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product short -index 900 101 181 1030 ...
 ```
 
 Grabs the latest short range forecast at index 1234
 ```shell
-docker run dewberrycsi/nwm-fetch-forecasts:latest -index 1234
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -index 1234
 ```
 
 Grabs the medium range forecast at multiple indices
 ```shell
-docker run dewberrycsi/nwm-fetch-forecasts:latest -date_time "2019-01-02-15" -product medium -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product medium -index 900 101 181 1030 ...
 ```
 
 Grabs retrospective data at multiple indices
 ```shell
-docker run dewberrycsi/nwm-fetch-forecasts:latest -date_time "1999-01-02-15" -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 1999-01-02-15 -index 900 101 181 1030 ...
 ```
 
 #### Outputs
 
 Results will be output to `STDOUT` as a json, and can be easily piped to a file as needed. For example:
 ```shell
-docker run dewberrycsi/nwm-fetch-forecasts:latest -index 1234 > results.json
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -index 1234 > results.json
+```
+
+To format the json output with indentation:
+```shell
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version | python3 -m json.tool
+```
+
+Putting it all together:
+```shell
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version | python3 -m json.tool > results.json
 ```
 
 #### File locations
-The main Go executable is located at `/main`
+- The main Go executable is located at `/main`
+- The GCP NWM forecasts bucket will be mounted by `/main` at `/forecasts`
+- The AWS NWM retrospective bucket will be mounted by `/main` at `/retrospective`
 
 
 ## Built With
