@@ -66,7 +66,7 @@ The main Go executable is located at `/main`
 
 * [Go](https://golang.org/) v1.14
 * [Goofys](https://github.com/kahing/goofys) v0.24.0
-* github.com/fhs/go-netcdf v1.1.0
+* [github.com/fhs/go-netcdf](https://github.com/fhs/go-netcdf) v1.1.0
 
 ## Find Us
 
