@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"encoding/csv"
+	"fmt"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -48,4 +51,43 @@ func StringsToUint64s(strs []string) []uint64 {
 		uints = append(uints, uint64(i64))
 	}
 	return uints
+}
+
+// PositionCSVToMap ...
+func PositionCSVToMap(filePath string) (map[int64]uint64, error) {
+	outMap := make(map[int64]uint64)
+
+	// read csv file
+	csvfile, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf(err.Error())
+	}
+
+	defer csvfile.Close()
+
+	reader := csv.NewReader(csvfile)
+
+	rawCSVdata, err := reader.ReadAll()
+	if err != nil {
+		return nil, fmt.Errorf(err.Error())
+	}
+
+	for i, record := range rawCSVdata {
+		if i != 0 {
+			i64, err := strconv.ParseInt(record[0], 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf(err.Error())
+			}
+
+			position := uint64(i64)
+
+			comid, err := strconv.ParseInt(record[1], 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf(err.Error())
+			}
+
+			outMap[comid] = position
+		}
+	}
+	return outMap, nil
 }

@@ -40,17 +40,30 @@ func main() {
 
 	// Index (position) of streamflow data for comid of interest (900 selected at random)
 	flag.StringVar(&forecastProduct, "product", "short", "requested product: medium or short")
-	idx0 := flag.Uint64("index", 900, "netcdf file location (index) for streamflow value from desired comid")
+	idx0 := flag.Int64("comid", 900, "desired comid for streamflow value")
 	flag.Parse()
 
+	idxMap, err := utils.PositionCSVToMap("netcdf_index.csv")
+	utils.CheckError(err)
+
 	// Add all requested indices to idxs var for processing
-	var idxs []uint64 = []uint64{*idx0}
+	v, ok := idxMap[*idx0]
+	if !ok {
+		errMessage := fmt.Sprintf("Comid %d is not in the netcdf file", *idx0)
+		log.Fatal(errMessage)
+	}
+	var idxs []uint64 = []uint64{v}
 	additionalIDXs := flag.Args()
 
 	if len(additionalIDXs) > 0 {
 		for _, idx := range additionalIDXs {
-			idxINT, _ := strconv.Atoi(idx)
-			idxs = append(idxs, uint64(idxINT))
+			idxINT, _ := strconv.ParseInt(idx, 10, 64)
+			v, ok := idxMap[idxINT]
+			if !ok {
+				errMessage := fmt.Sprintf("Comid %d is not in the netcdf file", idxINT)
+				log.Fatal(errMessage)
+			}
+			idxs = append(idxs, uint64(v))
 		}
 	}
 

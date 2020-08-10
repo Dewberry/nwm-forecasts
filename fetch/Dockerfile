@@ -48,6 +48,7 @@ RUN apt-get update && \
     curl
 
 COPY --from=dev /fetch/main /
+COPY --from=dev /fetch/netcdf_index.csv /
 
 RUN mkdir /retrospective
 RUN mkdir /forecast
