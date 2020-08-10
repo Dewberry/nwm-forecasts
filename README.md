@@ -30,36 +30,36 @@ In order to run this container you'll need docker installed.
  - `-product`: the product requested. Can be either `short` or `medium`. 
     - If not entered, short range is assumed
     - If `medium` is specified and the date is before 2019-06-02, there will be a single ensemble member. If it is after that day, all ensemble members will be retrieved  
- - `-index`: the location in the netcdf files to pull stream flow
-    - all arguments tacked on to the end are assumed to be additional indicies
+ - `-comid`: the NHD comid to pull stream flow for
+    - all arguments tacked on to the end are assumed to be additional comids
 
 #### Examples
 
-Grabs short range forecast streamflow for multiple indices
+Grabs short range forecast streamflow for multiple comids
 ```shell
-docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product short -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product short -comid 900 101 181 1030 ...
 ```
 
-Grabs the latest short range forecast at index 1234
+Grabs the latest short range forecast at comid 1234
 ```shell
-docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -index 1234
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -comid 1234
 ```
 
-Grabs the medium range forecast at multiple indices
+Grabs the medium range forecast at multiple comids
 ```shell
-docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product medium -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 2019-01-02-15 -product medium -comid 900 101 181 1030 ...
 ```
 
-Grabs retrospective data at multiple indices
+Grabs retrospective data at multiple comids
 ```shell
-docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 1999-01-02-15 -index 900 101 181 1030 ...
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -date_time 1999-01-02-15 -comid 900 101 181 1030 ...
 ```
 
 #### Outputs
 
 Results will be output to `STDOUT` as a json, and can be easily piped to a file as needed. For example:
 ```shell
-docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -index 1234 > results.json
+docker run --privileged dewberrycsi/nwm-fetch-forecasts:version -comid 1234 > results.json
 ```
 
 To format the json output with indentation:
