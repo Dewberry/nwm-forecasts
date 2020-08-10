@@ -151,7 +151,15 @@ func GetMediumRangePaths(dtm string, forecastEra string) []string {
 	cloudPaths := make([]string, 0)
 
 	forecastDTM, _ := time.Parse(userDateFormat, dtm)
+	for {
+		if !(forecastDTM.Hour() == 0 || forecastDTM.Hour() == 6 || forecastDTM.Hour() == 12 || forecastDTM.Hour() == 18) {
+			forecastDTM = forecastDTM.Add(time.Hour * -1)
+		} else {
+			break
+		}
+	}
 	roundedStart := time.Date(forecastDTM.Year(), forecastDTM.Month(), forecastDTM.Day(), 0, 0, 0, 0, forecastDTM.Location())
+
 	startYearMonthDay = forecastDTM.Format(nwmDateFormat)
 	requestedHour := forecastDTM.Hour()
 
