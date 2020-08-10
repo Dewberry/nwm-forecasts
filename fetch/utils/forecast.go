@@ -49,7 +49,7 @@ type StreamFlow struct {
 
 // ComIDPrediction ...
 type ComIDPrediction struct {
-	Comid int64   `json:"comid_index"`
+	Comid int64   `json:"comid"`
 	Value float64 `json:"flow"`
 }
 
