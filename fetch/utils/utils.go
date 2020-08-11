@@ -54,13 +54,14 @@ func StringsToUint64s(strs []string) []uint64 {
 }
 
 // PositionCSVToMap ...
-func PositionCSVToMap(filePath string) (map[int64]uint64, error) {
-	outMap := make(map[int64]uint64)
+func PositionCSVToMap(filePath string) (map[int64]uint64, map[uint64]int64, error) {
+	comidIdxMap := make(map[int64]uint64)
+	idxComidMap := make(map[uint64]int64)
 
 	// read csv file
 	csvfile, err := os.Open(filePath)
 	if err != nil {
-		return nil, fmt.Errorf(err.Error())
+		return nil, nil, fmt.Errorf(err.Error())
 	}
 
 	defer csvfile.Close()
@@ -69,25 +70,26 @@ func PositionCSVToMap(filePath string) (map[int64]uint64, error) {
 
 	rawCSVdata, err := reader.ReadAll()
 	if err != nil {
-		return nil, fmt.Errorf(err.Error())
+		return nil, nil, fmt.Errorf(err.Error())
 	}
 
 	for i, record := range rawCSVdata {
 		if i != 0 {
 			i64, err := strconv.ParseInt(record[0], 10, 64)
 			if err != nil {
-				return nil, fmt.Errorf(err.Error())
+				return nil, nil, fmt.Errorf(err.Error())
 			}
 
 			position := uint64(i64)
 
 			comid, err := strconv.ParseInt(record[1], 10, 64)
 			if err != nil {
-				return nil, fmt.Errorf(err.Error())
+				return nil, nil, fmt.Errorf(err.Error())
 			}
 
-			outMap[comid] = position
+			comidIdxMap[comid] = position
+			idxComidMap[position] = comid
 		}
 	}
-	return outMap, nil
+	return comidIdxMap, idxComidMap, nil
 }

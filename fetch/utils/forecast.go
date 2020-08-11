@@ -323,7 +323,7 @@ type nextLevel = map[string][]ComIDPrediction
 type FinalResults map[string]nextLevel
 
 // MarshalResults ...
-func MarshalResults(results [][]StreamFlow) FinalResults {
+func MarshalResults(results [][]StreamFlow, lookup map[uint64]int64) FinalResults {
 
 	finalResults := make(FinalResults, 0)
 
@@ -331,8 +331,8 @@ func MarshalResults(results [][]StreamFlow) FinalResults {
 		for _, result := range results[i] {
 
 			// Add lookup map here to convert index to comid and drop int conversion
-			// comid := lookup[result.ComidIndex]
-			comid := int64(result.ComidIndex)
+			comid := lookup[result.ComidIndex]
+			// comid := int64(result.ComidIndex)
 			flowValue := result.Value
 			validTime := result.Time
 			product := result.Product

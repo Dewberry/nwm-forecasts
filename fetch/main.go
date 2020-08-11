@@ -40,14 +40,14 @@ func main() {
 
 	// Index (position) of streamflow data for comid of interest (900 selected at random)
 	flag.StringVar(&forecastProduct, "product", "short", "requested product: medium or short")
-	idx0 := flag.Int64("comid", 900, "desired comid for streamflow value")
+	idx0 := flag.Int64("comid", 101, "desired comid for streamflow value")
 	flag.Parse()
 
-	idxMap, err := utils.PositionCSVToMap("netcdf_index.csv")
+	comidIdxMap, idxComidMap, err := utils.PositionCSVToMap("netcdf_index.csv")
 	utils.CheckError(err)
 
 	// Add all requested indices to idxs var for processing
-	v, ok := idxMap[*idx0]
+	v, ok := comidIdxMap[*idx0]
 	if !ok {
 		errMessage := fmt.Sprintf("Comid %d is not in the netcdf file", *idx0)
 		log.Fatal(errMessage)
@@ -58,7 +58,7 @@ func main() {
 	if len(additionalIDXs) > 0 {
 		for _, idx := range additionalIDXs {
 			idxINT, _ := strconv.ParseInt(idx, 10, 64)
-			v, ok := idxMap[idxINT]
+			v, ok := comidIdxMap[idxINT]
 			if !ok {
 				errMessage := fmt.Sprintf("Comid %d is not in the netcdf file", idxINT)
 				log.Fatal(errMessage)
@@ -148,7 +148,7 @@ func main() {
 		// Add a check here to verify all results populated
 	}
 
-	finalResults := utils.MarshalResults(forecastResults)
+	finalResults := utils.MarshalResults(forecastResults, idxComidMap)
 	finalResultsBytes, err := json.Marshal(finalResults)
 	utils.CheckError(err)
 	fmt.Println(string(finalResultsBytes))
