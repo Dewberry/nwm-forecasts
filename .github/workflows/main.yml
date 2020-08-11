@@ -19,7 +19,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: docker build
       run: |
-        docker build ./fetch -t dewberrycsi/nwm-fetch-forecasts:1.1.1
+        docker build ./fetch -t dewberrycsi/nwm-fetch-forecasts:1.1.2
     - name: docker push
       run: |
-        docker push dewberrycsi/nwm-fetch-forecasts:1.1.1
+        docker push dewberrycsi/nwm-fetch-forecasts:1.1.2
